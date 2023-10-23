@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
+<form method="post" action="principal.php">
+        <input type="submit" value="Regresar">
+    </form>
     <div class="container mt-4">
         <h1 class="text-center">Lista de Alumnos</h1>
         <ul class="list-group">
