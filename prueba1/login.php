@@ -7,7 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $contrasena = $_POST['contrasena'];
 
         // Utilizar declaraciones preparadas para evitar la inyección SQL
-        $sql = "SELECT * FROM usuarios WHERE usuario = ? AND contraseña = ?";
+        $sql = "call LogUsu ('".$matricula."','".$contrasena."')";
 
         $stmt = mysqli_prepare($conn, $sql);
 
