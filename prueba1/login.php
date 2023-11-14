@@ -1,37 +1,54 @@
 <?php
-require('conexion.php');
+require('conexion.php'); 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+   
     if (isset($_POST['matricula']) && isset($_POST['contrasena'])) {
-        $matricula = $_POST['matricula'];
-        $contrasena = $_POST['contrasena'];
+        $matricula = $_POST['matricula']; 
+        $contrasena = $_POST['contrasena']; 
 
-        // Utilizar declaraciones preparadas para evitar la inyección SQL
-        $sql = "call LogUsu ('".$matricula."','".$contrasena."')";
+       
+        $sql = "CALL LogUsu(?, ?)";
+        
+        $stmt = mysqli_prepare($conn, $sql); 
 
-        $stmt = mysqli_prepare($conn, $sql);
-
+  
         if ($stmt) {
-            mysqli_stmt_bind_param($stmt, 'ss', $matricula, $contrasena);
-            mysqli_stmt_execute($stmt);
-            $result = mysqli_stmt_get_result($stmt);
+            mysqli_stmt_bind_param($stmt, 'ss', $matricula, $contrasena); 
+            mysqli_stmt_execute($stmt); 
 
-            if (mysqli_num_rows($result) == 1) {
-                // Inicio de sesión exitoso
+            $result = mysqli_stmt_get_result($stmt); 
+
+            if ($result && mysqli_num_rows($result) == 1) {
+                $usuario = mysqli_fetch_assoc($result);
+                $tipo = $usuario['tipo']; 
+
+                
                 session_start();
-                $_SESSION['usuario'] = $matricula;  // Cambia 'matricula' a 'usuario'
-                header("location: principal.php");
-            } else {
-                // Credenciales incorrectas
-                echo "Credenciales incorrectas. <a href='index.php'>Volver</a>";
+                $_SESSION['usuario'] = $matricula; 
+                $_SESSION['tipo'] = $tipo; 
+
+                
+                if ($tipo == 'alumno') {
+                    header("location: alum/Alum.php");
+
+                } else if ($tipo == 'maestro') {
+                    header("location: profesor/pri.php");
+
+                } else if ($tipo == 'coordinador') {
+                    header("location: coordi/Coor1.php");
+                }
+                } else {
+ 
+    
+    session_start();
+    $_SESSION['error_message'] = "Datos invalidos.";
+    header("location: index.php");
+    
+   
+
             }
-        } else {
-            // Error en la sentencia preparada
-            echo "Error en la sentencia preparada. " . mysqli_error($conn);
         }
-    } else {
-        // Los campos del formulario no se enviaron correctamente
-        echo "Por favor, complete el formulario. <a href='index.php'>Volver</a>";
     }
 }
 ?>

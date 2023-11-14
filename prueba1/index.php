@@ -1,48 +1,112 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesión</title>
-    <!-- Enlaces a las bibliotecas Bootstrap y otros estilos -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <style>
+        
+        
+        body {
+            background-color: #f0cf89;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        .login-container {
+            background-color: #fff;
+            width: 300px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 90%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        input[type="submit"] {
+            width: 60%;
+            background-color: #56f051;
+            color: #141313;
+            padding: 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #e9a846;
+            
+        }
+        
+    </style>
     <style>
         body {
-            font-family: 'Roboto', sans-serif;
+          border: 30px solid #a7f7ae; 
+          padding: 20px; 
         }
-    </style>
+      </style>
 </head>
 <body>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6 offset-md-3">
-                <div class="card">
-                    <div class="card-header">
-                        Iniciar Sesión
-                    </div>
-                    <div class="card-body">
-                        <form action="login.php" method="post">
-                            <div class="form-group">
-                                <label for="matricula">Matrícula:</label>
-                                <input type="text" class="form-control" id="matricula" name="matricula">
-                            </div>
-                            <div class="form-group">
-                                <label for="contrasena">Contraseña:</label>
-                                <input type="password" class="form-control" id="contrasena" name="contrasena">
-                            </div>
-                            <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="estilos.css">
+    
+                <img src="Imagenes\sin.png" alt="Descripción de la imagen" width="235" height="90">
+               
+                </pre>
+                <pre>
+                </pre>
+                
+    <div class="login-container">
+        <h2>Bienvenidos</h2>
+      
+      
+      
+      <?php
+            session_start();
+            if(isset($_SESSION['error_message'])) {
+                echo '<div style="color: #ff0000; margin-top: 10px;">' . $_SESSION['error_message'] . '</div>';
+                unset($_SESSION['error_message']);
+            }
+        ?>
+
+
+        <pre>
+        </pre>
+        <p align="center">
+            <form action="login.php" method="post"> 
+                <label for="matricula">Matricula:</label>
+                <input type="text" id="matricula" name="matricula" required>
+         
+                <label for="contrasena">Contraseña:</label>
+                <input type="password" id="contrasena" name="contrasena" required>
+    
+                <input type="submit" value="Entrar">
+            </form>            
     </div>
+    <footer>
+        <p align="center">
+          &copy; cecyteh 2023 - Todos los derechos reservados
+        </p> 
+      </footer>
 </body>
 </html>
-
-
+</html>
 
 
 
