@@ -1,3 +1,64 @@
+<?php
+
+session_start();
+
+if (!isset($_SESSION['usuario'])) {
+    echo "No se ha iniciado sesión.";
+    exit;
+}
+
+
+$matriculaUsuario = $_SESSION['usuario'];
+
+
+if (!isset($matriculaUsuario)) {
+    echo "La matrícula del usuario no está definida.";
+    exit;
+}
+
+
+require('../conexion.php');
+
+
+if (!$conn) {
+    die("Conexión fallida: " . mysqli_connect_error());
+}
+
+//consulta información del alumno y su grupo
+$sqlAlumno = "SELECT alumno.Nombre, alumno.ApellidoPaterno, alumno.ApellidoMaterno, grupo.Descripcion
+              FROM alumno
+              JOIN grupo ON alumno.Grupo_IdGrupo = grupo.IdGrupo
+              WHERE alumno.MatriculaAlumno = ?";
+$stmtAlumno = mysqli_prepare($conn, $sqlAlumno);
+
+
+
+if (!$stmtAlumno) {
+    die("Error en la preparación de la consulta: " . mysqli_error($conn));
+}
+
+
+mysqli_stmt_bind_param($stmtAlumno, 's', $matriculaUsuario);
+mysqli_stmt_execute($stmtAlumno);
+
+
+$resultAlumno = mysqli_stmt_get_result($stmtAlumno);
+
+
+if ($resultAlumno && mysqli_num_rows($resultAlumno) == 1) {
+    $infoAlumno = mysqli_fetch_assoc($resultAlumno);
+
+   
+} else {
+    echo "Error al obtener la información del alumno. Detalles: " . mysqli_error($conn);
+    exit;
+}
+?>
+
+
+
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -99,14 +160,23 @@
   </style>
 </head>
 <body>
-  <div class="info-box">
+
+
+
+<div class="info-box">
     <h2 style="text-align: left;">Alumno</h2>
-    
-    <p style="text-align: left;">Alumno: Rene Osorio Lira</p>
-    <p style="text-align: left;">Matricula: 2112413</p>
-    <p style="text-align: left;">Carrera: Programación</p>
-    <p style="text-align: left;">Semestre: J</p>
-  </div>
+    <?php if (isset($infoAlumno)): ?>
+        <p style="text-align: left;">Alumno: <?php echo $infoAlumno['Nombre'] . ' ' . $infoAlumno['ApellidoPaterno'] . ' ' . $infoAlumno['ApellidoMaterno']; ?></p>
+        <p style="text-align: left;">Grupo: <?php echo $infoAlumno['Descripcion']; ?></p>
+    <?php else: ?>
+        <p style="text-align: left;">No se pudo obtener la información del alumno.</p>
+    <?php endif; ?>
+    <p style="text-align: left;">Matrícula: <?php echo $matriculaUsuario; ?></p>
+</div>
+
+
+
+
 </body>
       <center> <body>
   

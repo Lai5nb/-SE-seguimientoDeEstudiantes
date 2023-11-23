@@ -1,3 +1,64 @@
+<?php
+
+session_start();
+
+
+if (!isset($_SESSION['usuario'])) {
+    echo "No se ha iniciado sesión.";
+    exit;
+}
+
+
+$matriculaUsuario = $_SESSION['usuario'];
+
+
+if (!isset($matriculaUsuario)) {
+    echo "La matrícula del usuario no está definida.";
+    exit;
+}
+
+
+require('../conexion.php');
+
+
+if (!$conn) {
+    die("Conexión fallida: " . mysqli_connect_error());
+}
+
+
+//consulta coordinador y la carrera
+$sqlCoordinador = "SELECT coordinador.Nombre, coordinador.ApellidoPaterno, coordinador.ApellidoMaterno, carrera.Carreracol
+                  FROM coordinador
+                  JOIN carrera ON coordinador.Carrera_IdCarrera = carrera.IdCarrera
+                  WHERE coordinador.MatriculaCoordinador = ?";
+
+
+$stmtCoordinador = mysqli_prepare($conn, $sqlCoordinador);
+
+
+if (!$stmtCoordinador) {
+    die("Error en la preparación de la consulta: " . mysqli_error($conn));
+}
+
+
+mysqli_stmt_bind_param($stmtCoordinador, 's', $matriculaUsuario);
+mysqli_stmt_execute($stmtCoordinador);
+
+
+$resultCoordinador = mysqli_stmt_get_result($stmtCoordinador);
+
+
+if ($resultCoordinador && mysqli_num_rows($resultCoordinador) == 1) {
+    $infoCoordinador = mysqli_fetch_assoc($resultCoordinador);
+
+} else {
+    echo "Error al obtener la información del coordinador. Detalles: " . mysqli_error($conn);
+    exit;
+}
+?>
+
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -121,13 +182,24 @@
   </style>
 </head>
 <body>
-  <div class="info-box">
+
+
+
+<div class="info-box">
     <h2 style="text-align: left;">Coordinador</h2>
-    
-    <p style="text-align: left;">Coordinador: Mauricio Campos </p>
-    <p style="text-align: left;">Matricula: 32154686</p>
-    <p style="text-align: left;">Componente: Programación</p>
-  </div>
+    <?php if (isset($infoCoordinador)): ?>
+        <p style="text-align: left;">Coordinador: <?php echo $infoCoordinador['Nombre'] . ' ' . $infoCoordinador['ApellidoPaterno'] . ' ' . $infoCoordinador['ApellidoMaterno']; ?></p>
+        <p style="text-align: left;">Matrícula: <?php echo $matriculaUsuario; ?></p>
+    <?php else: ?>
+        <p style="text-align: left;">No se pudo obtener la información del coordinador.</p>
+    <?php endif; ?>
+    <p style="text-align: left;">Componente: <?php echo $infoCoordinador['Carreracol']; ?></p>
+</div>
+
+
+
+
+
 </body>
       <center> <body>
   

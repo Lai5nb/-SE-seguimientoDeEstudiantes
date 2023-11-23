@@ -1,3 +1,54 @@
+<?php
+
+session_start();
+
+if (!isset($_SESSION['usuario'])) {
+    echo "No se ha iniciado sesión.";
+    exit;
+}
+
+
+$matriculaUsuario = $_SESSION['usuario'];
+
+
+if (!isset($matriculaUsuario)) {
+    echo "La matrícula del usuario no está definida.";
+    exit;
+}
+
+
+require('../conexion.php');
+
+
+if (!$conn) {
+    die("Conexión fallida: " . mysqli_connect_error());
+}
+
+$sql = "SELECT Nombre, ApellidoPaterno, ApellidoMaterno FROM maestro WHERE MatriculaMestro = ?";
+$stmt = mysqli_prepare($conn, $sql);
+
+
+if (!$stmt) {
+    die("Error en la preparación de la consulta: " . mysqli_error($conn));
+}
+
+
+mysqli_stmt_bind_param($stmt, 's', $matriculaUsuario);
+mysqli_stmt_execute($stmt);
+
+
+$result = mysqli_stmt_get_result($stmt);
+
+
+if ($result && mysqli_num_rows($result) == 1) {
+    $infoMaestro = mysqli_fetch_assoc($result);
+} else {
+    echo "Error al obtener la información del maestro. Detalles: " . mysqli_error($conn);
+    exit;
+}
+?>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -98,12 +149,20 @@
   </style>
 </head>
 <body>
-  <div class="info-box">
-    <h2 style="text-align: left;">Profesor</h2>
-    
-    <p style="text-align: left;">Profesor: Juan Torres Escamilla</p>
-    <p style="text-align: left;">Matricula: 12124134</p>
-  </div>
+
+
+
+<div class="info-box">
+        <h2 style="text-align: left;">Profesor</h2>
+        <?php if (isset($infoMaestro)): ?>
+            <p style="text-align: left;">Profesor: <?php echo $infoMaestro['Nombre'] . ' ' . $infoMaestro['ApellidoPaterno'] . ' ' . $infoMaestro['ApellidoMaterno']; ?></p>
+        <?php else: ?>
+            <p style="text-align: left;">No se pudo obtener la información del maestro.</p>
+        <?php endif; ?>
+        <p style="text-align: left;">Matricula: <?php echo $matriculaUsuario; ?></p>
+    </div>
+
+
 </body>
 <style>
   table {
@@ -371,5 +430,3 @@
 </body>
 </body>
 </html>
-
-
