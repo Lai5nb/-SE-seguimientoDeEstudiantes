@@ -5,10 +5,7 @@
     <title>Iniciar Sesión</title>
     <style>
         
-<<<<<<< HEAD
-=======
         
->>>>>>> 77b83cebefd46e1ae71b50ab3e3c5bc89db09dde
         body {
             background-color: #f0cf89;
             font-family: Arial, sans-serif;
@@ -67,38 +64,17 @@
       </style>
 </head>
 <body>
-<<<<<<< HEAD
-   
-    
-                <img src="sin.png" alt="Descripción de la imagen" width="235" height="90">
-            
-=======
     <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" type="text/css" href="estilos.css">
     
                 <img src="Imagenes\sin.png" alt="Descripción de la imagen" width="235" height="90">
                
->>>>>>> 77b83cebefd46e1ae71b50ab3e3c5bc89db09dde
                 </pre>
                 <pre>
                 </pre>
                 
     <div class="login-container">
         <h2>Bienvenidos</h2>
-<<<<<<< HEAD
-        <pre>
-        </pre>
-        <p align="center">
-        <form action="login.php" method="post"> 
-            <label for="matricula">Matricula:</label>
-            <input type="text" id="matricula" name="matricula" required>
-     
-            <label for="contrasena">Contraseña:</label>
-            <input type="password" id="contrasena" name="contrasena" required>
-
-            <input type="submit" value="Entrar">
-        </form>
-=======
       
       
       
@@ -123,7 +99,6 @@
     
                 <input type="submit" value="Entrar">
             </form>            
->>>>>>> 77b83cebefd46e1ae71b50ab3e3c5bc89db09dde
     </div>
     <footer>
         <p align="center">
