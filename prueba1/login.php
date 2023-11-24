@@ -1,6 +1,9 @@
 <?php
 require('conexion.php'); 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 77b83cebefd46e1ae71b50ab3e3c5bc89db09dde
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
    
@@ -24,6 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $usuario = mysqli_fetch_assoc($result);
                 $tipo = $usuario['tipo']; 
 
+<<<<<<< HEAD
                 // Inicio de sesión
                 session_start();
                 $_SESSION['usuario'] = $matricula; // Almacena la matrícula en la sesión
@@ -39,6 +43,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 } else {
     echo "Acceso no autorizado. <a href='index.php'>Volver</a>";
 }
+=======
+                
+                session_start();
+                $_SESSION['usuario'] = $matricula; 
+                $_SESSION['tipo'] = $tipo; 
+
+                
+                if ($tipo == 'alumno') {
+                    header("location: alum/Alum.php");
+
+                } else if ($tipo == 'maestro') {
+                    header("location: profesor/pri.php");
+
+                } else if ($tipo == 'coordinador') {
+                    header("location: coordi/Coor1.php");
+                }
+                } else {
+ 
+    
+    session_start();
+    $_SESSION['error_message'] = "Datos invalidos.";
+    header("location: index.php");
+    
+   
+
+>>>>>>> 77b83cebefd46e1ae71b50ab3e3c5bc89db09dde
             }
         }
     }
